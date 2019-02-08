@@ -1,0 +1,35 @@
+.logtable inslogtable1;
+.logon 10.58.0.66/TD_USER19,TD_USER19;
+
+
+drop table gg_clim;
+
+create table gg_clim (
+wh_cust_no varchar(10),
+cust_name varchar(10)
+);
+
+
+
+.BEGIN IMPORT MLOAD tables gg_clim;
+
+.layout ggclilayout1;
+
+.field wh_cust_no * varchar(10);
+.field cust_name * varchar(10);
+
+.dml label insertclidml;
+
+
+insert into gg_clim (wh_cust_no,cust_name) 
+values (:wh_cust_no,:cust_name);
+
+.import infile \\10.220.58.30\sw\Teradata_Pr\Day_2\TD_Mload
+format VARtext','
+layout ggclilayout1
+apply insertclidml;
+
+
+.END MLOAD;
+
+.logoff;

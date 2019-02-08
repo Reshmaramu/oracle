@@ -1,0 +1,6 @@
+SEL Databasename, sum(Maxperm) As "Total_Space (GB)",SUM(Currentperm) As "Used_Space (GB)", 
+"Total_Space (GB)" - "Used_Space (GB)" AS "Free_space (GB)"
+FROM	 DBC.DiskSpace
+GROUP BY databasename
+ORDER BY 1;
+ 

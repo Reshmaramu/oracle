@@ -1,0 +1,90 @@
+     ========================================================================
+     =                                                                      =
+     =          FastExport Utility    Release FEXP.13.00.00.006             =
+     =          Platform WIN32                                              =
+     =                                                                      =
+     ========================================================================
+     =                                                                      =
+     =     Copyright 1990-2009 Teradata Corporation. ALL RIGHTS RESERVED.   =
+     =                                                                      =
+     ========================================================================
+**** 14:27:44 UTY2411 Processing start date: WED APR 26, 2017
+     ========================================================================
+     =                                                                      =
+     =          Logon/Connection                                            =
+     =                                                                      =
+     ========================================================================
+0001 .logtable abc3;
+0002 .logon cgi/dbc,;
+**** 14:27:44 UTY8400 Teradata Database Release: 13.00.00.12
+**** 14:27:44 UTY8400 Teradata Database Version: 13.00.00.12
+**** 14:27:44 UTY8400 Default character set: ASCII                         
+**** 14:27:44 UTY8400 Current RDBMS has UDT support
+**** 14:27:44 UTY8400 Current RDBMS has Large Decimal support
+**** 14:27:44 UTY8400 Maximum supported buffer size: 1M
+**** 14:27:44 UTY8400 Data Encryption supported by RDBMS server
+**** 14:27:44 UTY6211 A successful connect was made to the RDBMS.
+**** 14:27:44 UTY6210 Logtable 'DBC.abc3' indicates that a restart is in progress.
+     ========================================================================
+     =                                                                      =
+     =          Processing Control Statements                               =
+     =                                                                      =
+     ========================================================================
+0003 .begin export sessions 4;
+0004 .export outfile file123;
+0005 sel * from dbc.users;
+0006 .end export;
+     ========================================================================
+     =                                                                      =
+     =          FastExport Initial Phase                                    =
+     =                                                                      =
+     ========================================================================
+**** 14:27:44 UTY8700 Options in effect for this FastExport task:
+     .       Sessions:    4 session(s).
+     .       Mode:        INDICATOR
+     .       Blocksize:   64330 bytes.
+     .       Outlimit:    No limit in effect.
+**** 14:27:44 UTY8715 FastExport is submitting the following request:
+     Select NULL from DBC.abc3 where (LogType = 220) and (Seq = 1) and (FExptSeq
+     = 0);
+**** 14:27:44 UTY8705 EXPORT session(s) requested: 4.
+**** 14:27:44 UTY8706 EXPORT session(s) connected: 2.
+**** 14:27:44 UTY8715 FastExport is submitting the following request:
+     BT;BEGIN FASTEXPORT;
+**** 14:27:44 UTY8715 FastExport is submitting the following request:
+     SELECT MiscInt1 (INTEGER), MiscInt2 (INTEGER), MiscInt3 (INTEGER),FExptSeq
+     (INTEGER), FExptCkpt (VARBYTE(1024)) from DBC.abc3 WHERE (LogType = 210)
+     and (Seq = 1) and (FExptSeq IN (SELECT MAX(FExptSeq) from DBC.abc3 where
+     (LogType = 210) and (Seq = 1)));
+**** 14:27:44 UTY8715 FastExport is submitting the following request:
+     SELECT MiscInt1 (INTEGER), MiscInt2 (INTEGER),  MiscInt3 (INTEGER),FExptSeq
+     (INTEGER), FExptCkpt (VARBYTE(1024)) from DBC.abc3 WHERE (LogType = 212)
+     and (Seq = 1) and (FExptSeq IN (SELECT MAX(FExptSeq) from DBC.abc3 where
+     (LogType = 212) and (Seq = 1)));
+**** 14:27:44 UTY8715 FastExport is submitting the following request:
+     sel * from dbc.users;
+**** 14:27:44 UTY8724 Select request submitted to the RDBMS.
+**** 14:27:45 UTY8725 Select execution completed. 1 data blocks generated.
+**** 14:27:45 UTY8715 FastExport is submitting the following request:
+     INS DBC.abc3 (LogType, Seq) VALUES (220, 1)
+**** 14:27:45 UTY8715 FastExport is submitting the following request:
+     END FASTEXPORT;ET;
+**** 14:27:46 UTY8710 Processing complete for this FastExport task.
+     ========================================================================
+     =                                                                      =
+     =          FastExport Task Complete                                    =
+     =                                                                      =
+     ========================================================================
+**** 14:27:46 UTY8722 9 total records written to output file.
+0007 .logoff;
+     ========================================================================
+     =                                                                      =
+     =          Logoff/Disconnect                                           =
+     =                                                                      =
+     ========================================================================
+**** 14:27:46 UTY6216 The restart log table has been dropped.
+**** 14:27:46 UTY6212 A successful disconnect was made from the RDBMS.
+**** 14:27:46 UTY2410 Total processor time used = '0.374402 Seconds'
+     .       Start : 14:27:44 - WED APR 26, 2017
+     .       End   : 14:27:46 - WED APR 26, 2017
+     .       Highest return code encountered = '0'.

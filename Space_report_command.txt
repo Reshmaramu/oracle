@@ -1,0 +1,8 @@
+SEL CURRENT_DATE AS "Date",
+ SUM(MaxPerm) /1024/1024/1024 AS "Total_Space (GB)", 
+   SUM(CurrentPerm)/1024/1024/1024 AS "Used_Space (GB)", 
+	"Total_Space (GB)" - "Used_Space (GB)" AS "Free_space (GB)",
+	SUM(CurrentSpool)/1024/1024/1024 AS "CurrentSpool (GB)"
+--	SUM(maxspool)/1024/1024/1024 AS "Maxspool (GB)"
+	--((SUM(currentperm) / NULLIFZERO(SUM(maxperm)) * 100)) (FORmat 'zz9.99') AS "PctInUse (%)"		
+	FROM	 DBC.DiskSpace;

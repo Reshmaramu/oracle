@@ -1,0 +1,10 @@
+Example: Data distribution acroll all AMPs
+SELECT
+            HASHROW ('Teradata')   AS "Hash Value"
+            , HASHBUCKET (HASHROW ('Teradata')) AS "Bucket Num"
+            , HASHAMP (HASHBUCKET (HASHROW ('Teradata'))) AS "AMP Num"
+            , HASHBAKAMP (HASHBUCKET (HASHROW ('Teradata')))  AS "AMP Fallback Num" ;
+
+
+to find number of amp:
+select hashamp()+1

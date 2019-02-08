@@ -1,0 +1,7 @@
+.logtable abc3;
+.logon cgi/dbc,dbc;
+.begin export sessions 4;
+.export outfile file123;
+sel * from dbc.users;
+.end export;
+.logoff;

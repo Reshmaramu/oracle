@@ -1,0 +1,80 @@
+•	Three types of partition are supported by Teradata RDBMS:
+•	Simple Partition
+•	Case based Partition
+•	Range based Partition
+
+Creating a simple Partition
+
+Create table Employee_table_PPI 
+(
+ Employee_No INTEGER,
+ Dept_No         INTEGER,
+ First_Name CHAR(30),
+ Last_Name CHAR(30),
+ Salary         DECIMAL(30,2)
+)Primary Index(Employee_No)
+  PARTITION BY (Dept_No);
+
+Creating a Case Based Partition
+
+CREATE      TABLE ORDER_Table 
+(
+ORD_number  integer NOT NULL,
+customer_number integer NOT NULL,
+order_date  date ,
+order_total integer
+)
+PRIMARY INDEX (customer_number)
+PARTITION BY CASE_N
+     (Order_Total < 1000,
+     Order_Total < 5000,
+     Order_Total < 10000,
+     Order_Total < 20000,
+     NO Case, UNKNOWN);
+) ;
+
+
+
+Creating a Range Based Partition
+
+CREATE TABLE ORDER_Table 
+(
+ORD_number  integer NOT NULL,
+customer_number integer NOT NULL,
+order_date  date ,
+order_total integer
+)
+PRIMARY INDEX (customer_number)
+PARTITION BY range_n (
+            Order_date BETWEEN date '2010-01-01'       AND      date '2010-12-31'
+            EACH interval '1' month,
+NO RANGE 
+        OR  UNKNOWN);
+
+Multi Level Partitioning
+
+CREATE TABLE ORDER_Table_MLPPI 
+(
+ORD_number  integer NOT NULL,
+customer_number integer NOT NULL,
+order_date  date ,
+order_total integer
+)
+PRIMARY INDEX (customer_number)
+PARTITION BY( range_n (
+            Order_date BETWEEN date '2010-01-01'       AND      date '2010-12-31'
+            EACH interval '1' DAY,);
+PARTITION BY CASE_N
+     (Order_Total < 1000,
+     Order_Total < 5000,
+     Order_Total < 10000,
+     Order_Total < 20000,
+     NO Case);
+) ;
+This type of partitioning is called a MULTI-LEVEL PPI. 
+It is a Partition within a Partition. 
+The top partition is the only one you can ALTER. 
+With Multi-Level partitioning you can combine up to 15 Case_N or Range_N  partitions within partitions.
+ NO Simple Partitioning can be used in Multi-Level Partitioning.
+Why NUPI Created with partitioning?
+This is because the PRIMARY INDEX (Order_Number ) was not part of the Partition. That is why most PPI tables are defined as NUPI

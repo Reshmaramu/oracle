@@ -1,0 +1,49 @@
+1) In systemfe I created a table named locktest.  From BTEQ, we will place a lock on this table.
+	bt;
+	lock systemfe.locktest for write;
+
+2) In a different BTEQ session, we will try to select from this table, but we will be blocked.
+	sel * from systemfe.locktest;
+
+3) From lokdisp or pmon you will see that the session is blocked.
+	Number of Blocked Trans displayed :      1
+	=========================================
+	Blocked Trans : 16383 02524608
+	    Number of blockers displays :       1
+   Number of blockers exists   :       1
+   Blocker Trans : 16380 0250D982
+           lock mode       : Write
+           lock status     : Granted
+           lock objectType : Row
+           lock objectID   : DBID     : 000003EB
+                           : DBNAME   : SYSTEMFE      
+                           : TableID  : 00002EF6,0400
+                           : TableName  : LOCKTEST      
+                           : RowHashS : 2EF60000
+                                        DUMMY TABLE LOCK
+
+4) Run dumplocklog at this point, and you will see no rows are logged.
+
+5) Go to the first BTEQ window and submit an end transaction statement.
+	et;
+
+6) Switch to the second BTEQ window and you will see the transaction completed (i.e. the lock request was granted).
+	sel * from drew.locktest;
+
+	 *** Query completed. No rows found. 
+	 *** Total elapsed time was 15 minutes and 35 seconds.
+
+7) Run dumplocklog again, and you will find a row for this blocking
+	     Date  08/27
+        Time  16:37:54
+       Delay  15:35.0
+         Typ  Wr
+         AMP     31
+BLKINGSESSNO      1012142
+ BLKINGLEVEL  RowHash
+  BLKDSESSNO      1012188
+   BLKDLEVEL  Table
+   Target-DB  SystemFe
+       Table  locktest  
+
+Please let me know if you have any further questions.

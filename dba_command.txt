@@ -1,0 +1,181 @@
+To check daily backup from Admin :
+
+sel * from dbc.events where username='arcuser1' and createdate ='2009-11-24' 
+
+To check daily backup from Admin :
+
+sel * from dbc.events where username='arcuser1' and createdate ='2009-11-24' 
+
+-- No. of Database object information
+Locking row for access
+SELECT tablekind,
+CASE WHEN tablekind='m' THEN 'MACRO'
+WHEN tablekind='V' THEN 'View'
+WHEN tablekind='P' THEN 'Procedure'
+WHEN tablekind='T' THEN 'Table'
+ELSE ' ' 
+END AS "Object Type",
+COUNT(*) 
+FROM dbc.tvm 
+GROUP BY 1
+ORDER BY 2 desc;
+
+-- No. of User Information
+Locking row for access
+SEL
+ CASE WHEN rowtype='U' THEN 'USER'
+ WHEN rowtype='D' THEN 'Database'
+ ELSE ' '
+ END AS "Name"
+ ,COUNT(*) 
+FROM dbc.dbase 
+GROUP BY 1;
+
+-- No. of Role Information
+Locking row for access
+SEL COUNT(*) AS "Role Name"FROM dbc.roleinfo;
+
+Use the following SQL-Query to find out all the tables having PPI defined…
+
+SELECT TRIM(I.DATABASENAME), 
+      ,TRIM(I.TABLENAME)
+      ,SUM(T.CURRENTPERM) AS CURRENTPERM
+      ,TRIM(I.CONSTRAINTTEXT)
+  FROM DBC.INDEXCONSTRAINTS I
+      ,DBC.TABLESIZE        T
+  WHERE I.CONSTRAINTTYPE = 'Q'
+    AND T.DATABASENAME   = I.DATABASENAME
+    AND T.TABLENAME      = I.TABLENAME
+  GROUP BY 1,2,4;
+
+
+Current Size of transiant journal
+
+select tablename,sum(currentperm)/1024/1024  from dbc.tablesize
+where tablename = 'transientjournal'
+group by tablename
+
+To verify backup in progress
+----------------------------
+select * from dbc.sessioninfo
+where username = "backup user"
+
+locking table dbc.resusagescpu for access select count(*), min(thedate), max(thedate) from dbc.resusagescpu;
+
+
+SEL databasename,tablename,SUM(currentperm)/1024/1024/1024 "Gb" FROM dbc.tablesize 
+GROUP BY 1,2
+ORDER BY 3 DESC
+
+
+--Try the following SQL-Query to find out Parent-Child in Referential-Integrity...
+ 
+LOCKING TABLE DBC.CONSTRAINTNAMES FOR ACCESS
+LOCKING TABLE DBC.ReferencingTbls FOR ACCESS
+LOCKING TABLE DBC.TVM FOR ACCESS
+SELECT TV1.TVMNAMEI AS "PARENT", TV2.TVMNAMEI AS "CHILD", CNN.*, CTT.*
+ FROM DBC.TVM "TV1", DBC.TVM "TV2", DBC.ReferencingTbls "CTT", DBC.CONSTRAINTNAMES CNN
+ WHERE CTT.ReferencedDbID = TV1.DatabaseId
+AND CTT.ReferencedTblID = TV1.TVMId
+AND CTT.ReferencingDbID = TV2.DatabaseId
+AND CTT.ReferencingTblID = TV2.TVMId
+AND CTT.ReferencingDbID = CNN.DatabaseId
+AND CTT.ReferencingTblID = CNN.TableId
+order by 1, 2;
+
+--Please find the attached Dbql report of 5-10-2009 to 18-10-2009.
+ 
+I used following SQL to findout above report.
+ 
+"select trim(extract(year 
+from LogonDateTime))||'-'|| trim(extract(month 
+from LogonDateTime))||'-'||trim(extract(day 
+from LogonDateTime) ) as "LogonDate"
+,username
+,clientid
+,starttime as "Query Start Time"
+, querytext 
+, errorcode
+,errortext
+from PDCRDATA.DBQLOGTBL_HST 
+where logdate between '2009-10-05' and '2009-10-18' ;
+
+--query that will clean up duplicate accessrights that are held by an individual that also has the same access right in a role that he is assigned to.
+ 
+Select 'Revoke all on ' || Trim(databasename) || ' from ' || TRIM(username) ||';'
+From 
+( Select username, databasename,accessright
+  From dbc.allrights
+  Where tablename ='ALL'
+Intersect
+  Select B.grantee As username, a.databasename, a.accessright 
+  From dbc.allrolerights a Join dbc.rolemembers b 
+  On a.rolename=b.rolename ) As a
+
+
+--To cal number of rows in BIG table:(bigint help to display any big number)
+
+sel cast(count(1) as bigint) as cnt from databasename.tablename
+
+
+--How to check who fire which query on a particular table
+SELECT UserID, UserName, ClientID,  QueryText 
+FROM DBC.QryLog
+WHERE  LOWER (querytext ) LIKE '%location%'
+
+--Database all space details
+SEL databasename, permspace, spoolspace,tempspace FROM dbc.databases WHERE dbkind='D' ORDER BY 1
+
+--Table size details
+SEL Databasename, tablename, SUM(currentperm)/1024/1024/1024 "Current Perm (GB)"
+FROM dbc.tablesize
+GROUP BY databasename,tablename
+ORDER BY  1,3 DESC
+
+---- Fallback report
+
+SELECT databasename, tablename FROM dbc.tables
+WHERE protectiontype = 'F'
+AND databasename NOT IN 
+   ('DBC','console','Crashdumps','dbcmngr','SYSLIB','SysAdmin','SystemFe','SYSUTDLIB','Sys_Calendar','tdwm','DBCMANAGER','History')
+AND tablekind ='T'
+ORDER BY databasename, tablename
+
+--To find out no of Nodes
+Select count(distinct nodeid) from dbc.resusagescpu
+
+--To find out number of vproc
+select distinct(vproc) from dbc.diskspace
+
+--how much data is on each AMP for a given table.(skew)
+SELECT DatabaseName,
+TableName ,
+Vproc ,
+CurrentPerm ,
+PeakPerm
+FROM DBC.TableSize
+WHERE
+DatabaseName= “DATABASE?
+AND
+TableName=?TABLE?
+ORDER BY Vproc;
+
+--how many rows per AMP are in a given table(skew)
+SELECT
+Hashamp (Hashbucket (Hashrow( PI_COLUMNS, … ))) as AMPNumber
+,Count(*) AS NumberOfRows
+From  DATABASE.TABLENAME
+GROUP BY 1
+ORDER BY 2;
+
+
+
+
+
+
+
+
+
+
+
+

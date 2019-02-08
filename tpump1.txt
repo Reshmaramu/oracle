@@ -1,0 +1,32 @@
+.logtable tpumplogtable;
+.logon cgi/dbc,dbc;
+
+drop table gg_clim;
+
+create table gg_clim (
+wh_cust_no varchar(10),
+cust_name varchar(10)
+);
+
+
+
+.BEGIN LOAD SESSIONs 4;
+
+.layout ggclilayout;
+                .field wh_cust_no * varchar(10);
+                .field cust_name * varchar(200);
+
+               
+.dml label insertclidml;
+
+insert into gg_clim.*;
+
+.IMPORT INFILE C:\tpumptpumpload.txt
+format VARtext' '
+                layout ggclilayout
+                apply insertclidml;
+.END LOAD;
+
+
+.logoff;
+

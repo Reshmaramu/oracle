@@ -1,0 +1,46 @@
+     ========================================================================
+     =                                                                      =
+     =          FastExport Utility    Release FEXP.13.00.00.006             =
+     =          Platform WIN32                                              =
+     =                                                                      =
+     ========================================================================
+     =                                                                      =
+     =     Copyright 1990-2009 Teradata Corporation. ALL RIGHTS RESERVED.   =
+     =                                                                      =
+     ========================================================================
+**** 14:23:58 UTY2411 Processing start date: WED APR 26, 2017
+     ========================================================================
+     =                                                                      =
+     =          Logon/Connection                                            =
+     =                                                                      =
+     ========================================================================
+0001 .logtable abc1;
+0002 .logon cgi/dbc,;
+**** 14:23:58 UTY8400 Teradata Database Release: 13.00.00.12
+**** 14:23:58 UTY8400 Teradata Database Version: 13.00.00.12
+**** 14:23:58 UTY8400 Default character set: ASCII                         
+**** 14:23:58 UTY8400 Current RDBMS has UDT support
+**** 14:23:58 UTY8400 Current RDBMS has Large Decimal support
+**** 14:23:58 UTY8400 Maximum supported buffer size: 1M
+**** 14:23:58 UTY8400 Data Encryption supported by RDBMS server
+**** 14:23:58 UTY6211 A successful connect was made to the RDBMS.
+**** 14:23:58 UTY6210 Logtable 'DBC.abc1' indicates that a restart is in progress.
+     ========================================================================
+     =                                                                      =
+     =          Processing Control Statements                               =
+     =                                                                      =
+     ========================================================================
+0003 .export outfile file123;
+**** 14:23:58 UTY8717 An 'EXPORT' statement was entered without a preceding 'Begin Export'
+     statement.
+     ========================================================================
+     =                                                                      =
+     =          Logoff/Disconnect                                           =
+     =                                                                      =
+     ========================================================================
+**** 14:23:58 UTY6215 The restart log table has NOT been dropped.
+**** 14:23:58 UTY6212 A successful disconnect was made from the RDBMS.
+**** 14:23:58 UTY2410 Total processor time used = '0.234002 Seconds'
+     .       Start : 14:23:58 - WED APR 26, 2017
+     .       End   : 14:23:58 - WED APR 26, 2017
+     .       Highest return code encountered = '8'.

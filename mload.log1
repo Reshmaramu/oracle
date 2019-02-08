@@ -1,0 +1,79 @@
+     ========================================================================
+     =                                                                      =
+     =          MultiLoad Utility    Release MLOD.12.00.00.002              =
+     =          Platform WIN32                                              =
+     =                                                                      =
+     ========================================================================
+     =                                                                      =
+     =          Copyright 1990-2007, NCR Corporation. ALL RIGHTS RESERVED.  =
+     =                                                                      =
+     ========================================================================
+**** 21:40:37 UTY2411 Processing start date: THU DEC 16, 2010
+     ========================================================================
+     =                                                                      =
+     =          Logon/Connection                                            =
+     =                                                                      =
+     ========================================================================
+0001 .logtable inslogtable;
+0002 .logon tdprod/dbc,;
+**** 21:40:37 UTY8400 Teradata Database Release: 12.00.00.10
+**** 21:40:37 UTY8400 Teradata Database Version: 12.00.00.10
+**** 21:40:37 UTY8400 Default character set: ASCII                         
+**** 21:40:37 UTY8400 Current RDBMS has interval support
+**** 21:40:37 UTY8400 Current RDBMS has UDT support
+**** 21:40:37 UTY8400 Maximum supported buffer size: 1M
+**** 21:40:37 UTY8400 Data Encryption supported by RDBMS server
+**** 21:40:37 UTY6211 A successful connect was made to the RDBMS.
+**** 21:40:37 UTY6217 Logtable 'DBC.inslogtable' has been created.
+     ========================================================================
+     =                                                                      =
+     =          Processing Control Statements                               =
+     =                                                                      =
+     ========================================================================
+
+0003 drop table gg_clim;
+**** 21:40:37 UTY1016 'DROP' request successful.
+
+0004 create table gg_clim (
+     wh_cust_no varchar(10),
+     cust_name varchar(10)
+     );
+**** 21:40:37 UTY1016 'CREATE' request successful.
+
+
+0005 SET RECORD UNFORMATTED;
+**** 21:40:37 UTY1008 RDBMS failure: 3707, Syntax error, expected something like '=' between
+     the word 'RECORD' and the word 'UNFORMATTED'.
+0006 SET RECORD VARTEXT " ";
+**** 21:40:37 UTY1008 RDBMS failure: 3707, Syntax error, expected something like '=' between
+     the word 'RECORD' and the word 'VARTEXT'.
+0007 .BEGIN IMPORT MLOAD tables gg_clim;
+     ========================================================================
+     =                                                                      =
+     =          Processing MultiLoad Statements                             =
+     =                                                                      =
+     ========================================================================
+
+0008 .layout ggclilayout;
+0009 .field wh_cust_no     * varchar(10);
+0010 .field cust_name      * varchar(10);
+
+0011 .dml label insertclidml;
+
+
+0012 insert into gg_clim.*;
+
+0013 .import infile c:\mload.txt;
+**** 21:40:37 UTY0012 Bad keyword in the IMPORT command at position 27:
+     Expected "LAYOUT" but found nothing.
+     ========================================================================
+     =                                                                      =
+     =          Logoff/Disconnect                                           =
+     =                                                                      =
+     ========================================================================
+**** 21:40:37 UTY6215 The restart log table has NOT been dropped.
+**** 21:40:37 UTY6212 A successful disconnect was made from the RDBMS.
+**** 21:40:37 UTY2410 Total processor time used = '0.125 Seconds'
+     .       Start : 21:40:37 - THU DEC 16, 2010
+     .       End   : 21:40:37 - THU DEC 16, 2010
+     .       Highest return code encountered = '8'.

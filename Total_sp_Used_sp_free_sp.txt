@@ -1,0 +1,16 @@
+SEL CURRENT_DATE AS "Date",
+      SUM(MaxPerm) /1024/1024/1024/1024 AS "Total_Space (TB)", 
+       SUM(CurrentPerm)/1024/1024/1024/1024 AS "Used_Space (TB)", 
+	"Total_Space (TB)" - "Used_Space (TB)" AS "Free_space (TB)"
+	--	SUM(maxspool)/1024/1024/1024 AS "Maxspool (GB)"
+	--((SUM(currentperm) / NULLIFZERO(SUM(maxperm)) * 100)) (FORmat 'zz9.99') AS "PctInUse (%)"		
+	FROM	 DBC.DiskSpace;
+
+SEL logdate AS "Date"
+,databasename AS "DatabaseName"
+,maxperm/1024/1024/1024 AS "Total space(GB)"
+,currentperm/1024/1024/1024 AS "Used space (GB)"
+,"Total space(GB)"-"Used space (GB)" AS "Free Space (GB)"
+FROM PDCRINFO.DatabaseSpace_Hst
+ORDER BY 1,2
+

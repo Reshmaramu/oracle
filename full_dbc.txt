@@ -1,0 +1,4 @@
+.logon tdtest/dbc,dbc;
+archive data tables(dbc) all, 
+release lock, file=alldb_bk;
+logoff;

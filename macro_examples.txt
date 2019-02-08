@@ -1,0 +1,12 @@
+Create macro p1 as (select * from abcd;);
+
+exec p1;
+
+show macro p1;
+
+create macro p3 (a char(10)) as (select * from abcd where sno=:a;);
+
+exec p3('aaa');
+
+
+

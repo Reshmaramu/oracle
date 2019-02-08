@@ -1,0 +1,43 @@
+SESSIONS 4;
+ERRLIMIT 25;
+.logon manish/dbc,dbc;
+
+drop table gg_cli;
+drop table error_1;
+drop table error_2;
+
+create table gg_cli (
+wh_cust_no varchar(10),
+cust_name varchar(10),
+bal_amt varchar(10) 
+);
+
+
+
+SET RECORD UNFORMATTED;
+SET RECORD VARTEXT " ";
+
+
+define
+                wh_cust_no (varchar(10)),
+                cust_name (varchar(10)),
+                bal_amt (varchar(10))
+               
+
+FILE=C:\insert.input1.txt;
+
+SHOW;
+
+BEGIN LOADING gg_cli errorfiles error_1, error_2;
+
+insert into gg_cli (
+                :wh_cust_no,
+                :cust_name,
+                :bal_amt
+);
+
+
+END LOADING;
+
+logoff;
+
